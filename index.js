@@ -115,6 +115,17 @@ async function run() {
       const result = await doctorsCollection.insertOne(doctor)
       res.send(result)
     })
+    app.delete('/doctor/:email', verifyJWT, verifyAdmin, async (req, res) => {
+      const email = req.params.email;
+      const filter = {email: email};
+      const result = await doctorsCollection.deleteOne(filter);
+      res.send(result);
+    })
+
+    app.get('/doctor', verifyJWT,verifyAdmin, async(req,res)=>{
+      const doctors = await doctorsCollection.find().toArray()
+      res.send(doctors)
+    })
 
 
     app.get('/admin/:email', async (req, res) => {
